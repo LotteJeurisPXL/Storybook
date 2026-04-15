@@ -1,15 +1,30 @@
 import React from "react";
 import { Player } from "@remotion/player";
-import { MyVideo } from "../video/MyVideo";
+import { StoryBook } from "../video/StoryBook";
+import { defaultInputProps, scenes } from "../video/Index";
 import type { VideoProps } from "../types";
 
-const VideoComposition: React.FC<VideoProps> = (props) => <MyVideo {...props} />;
+type StoryBookInputProps = typeof defaultInputProps;
+
+const VideoComposition: React.FC<StoryBookInputProps> = (props) => (
+  <StoryBook {...props} scenes={scenes} />
+);
+
+function totalDuration(props: StoryBookInputProps) {
+  return props.sceneOrder.length * props.sceneDuration + (props.sceneOrder.length - 1) * props.flipDuration;
+}
 
 interface VideoSectionProps {
   videoProps: VideoProps;
 }
 
 export function VideoSection({ videoProps }: VideoSectionProps) {
+  const storyBookProps: StoryBookInputProps = {
+    ...defaultInputProps,
+    // Reuse existing UI colour control as the book accent in StoryBook.
+    bookColour: videoProps.color,
+  };
+
   return (
     <section className="video-section">
       <div className="video-inner">
@@ -21,11 +36,11 @@ export function VideoSection({ videoProps }: VideoSectionProps) {
 
           <Player
             component={VideoComposition as any}
-            inputProps={videoProps}
-            durationInFrames={videoProps.durationInFrames}
-            compositionWidth={1280}
-            compositionHeight={720}
-            fps={videoProps.fps}
+            inputProps={storyBookProps}
+            durationInFrames={totalDuration(storyBookProps)}
+            compositionWidth={1920}
+            compositionHeight={1080}
+            fps={30}
             style={{ width: "100%", aspectRatio: "16/9", borderRadius: "inherit" }}
             controls
             loop

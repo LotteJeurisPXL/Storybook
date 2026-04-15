@@ -4,6 +4,7 @@ import { Header } from "./components/Header";
 import { Introduction } from "./components/Introduction";
 import { VideoSection } from "./components/VideoSection";
 import { InputSection } from "./components/InputSection";
+import { scenes } from "./video/Index";
 
 export default function App() {
   // ── Theme ──────────────────────────────────────────────

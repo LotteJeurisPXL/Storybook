@@ -1,0 +1,94 @@
+/* ============================================================
+   PageFlip.css
+   3D page-flip transition animation layers.
+   ============================================================ */
+
+@import "./tokens.css";
+
+/* ── Flip root — establishes perspective ── */
+.flip-root {
+  position: absolute;
+  inset: 0;
+  /* perspective and perspectiveOrigin set inline (depends on runtime pageWidth) */
+}
+
+/* ── Static incoming page beneath the turning leaf ── */
+.flip-incoming {
+  position: absolute;
+  inset: 0;
+  background-color: var(--parchment);
+  z-index: 0;
+}
+
+/* ── Sweep shadow overlay on the incoming page ── */
+.flip-sweep-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  /* background set inline (opacity driven by progress) */
+}
+
+/* ── The turning leaf ── */
+.flip-leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  z-index: 2;
+  /* transform set inline (rotateY + scaleY driven by progress) */
+}
+
+/* ── Front face of the leaf (outgoing page) ── */
+.flip-leaf__front {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background-color: var(--parchment);
+  background-image: var(--noise);
+}
+
+/* ── Right-edge sheen on the outgoing page as it lifts ── */
+.flip-leaf__sheen {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  bottom: 0;
+  pointer-events: none;
+  /* background set inline (opacity driven by progress) */
+}
+
+/* ── Back face of the leaf (blank paper reverse) ── */
+.flip-leaf__back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(180deg);
+}
+
+/* ── Back-face parchment fill ── */
+.flip-backface {
+  position: absolute;
+  inset: 0;
+  background-color: var(--parchment-dark);
+  background-image:
+    var(--noise),
+    repeating-linear-gradient(
+      transparent,
+      transparent 29px,
+      rgba(200, 191, 168, 0.33) 30px
+    );
+}
+
+/* ── Faint ghost-text lines on the back face ── */
+.flip-backface__line {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: rgba(160, 140, 100, 0.18);
+  border-radius: 1px;
+}

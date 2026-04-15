@@ -1,0 +1,222 @@
+/* ============================================================
+   OpenBook.css
+   Physical book shell: scene wrapper, book block, cover border,
+   page surfaces, page stack edges, spine crease, shadows.
+   ============================================================ */
+
+@import "./tokens.css";
+
+/* ── Scene wrapper (full video frame) ── */
+.book-scene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  /* background set inline via bookColour-derived radial gradient */
+}
+
+/* ── Ambient glow on the desk surface below the book ── */
+.book-table-glow {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.08;
+  filter: blur(32px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ── Elliptical drop-shadow beneath the book ── */
+.book-drop-shadow {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.55);
+  filter: blur(24px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ── The book block ── */
+.book-block {
+  position: relative;
+  /* overflow must be visible so the cover SVG can paint outside the page rect */
+  overflow: visible;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.50),
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    0 28px 70px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Hardcover border around the open book ── */
+.book-cover-border {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px 6px 6px 4px;
+  pointer-events: none;
+  z-index: 15;
+  /* colour and box-shadow set inline via bookColour */
+}
+
+/* ── Inner container that clips the page surfaces ── */
+.book-pages-clip {
+  position: absolute;
+  inset: 0;
+  /* border-radius set inline to match the JS-computed page corner radius */
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* ── Fill wrapper inside PageSurface ── */
+/* Ensures BookPage / PageFlip content is always anchored to the surface top-left,
+   regardless of whether PageFlip's flip-root is position:relative or absolute. */
+.page-surface__fill {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Single page surface (left or right half) ── */
+.page-surface {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background-color: var(--parchment);
+  background-image:
+    var(--noise),
+    var(--ruled-lines),
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.04) 0%,
+      transparent 6%,
+      transparent 94%,
+      rgba(0, 0, 0, 0.06) 100%
+    );
+  overflow: hidden;
+}
+
+.page-surface--left {
+  left: 0;
+  background-image:
+    var(--noise),
+    var(--ruled-lines),
+    linear-gradient(to right,  rgba(160, 130, 90, 0.10) 0%, transparent 18%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 0%, transparent 6%, transparent 94%, rgba(0, 0, 0, 0.06) 100%);
+}
+
+.page-surface--right {
+  right: 0;
+  background-image:
+    var(--noise),
+    var(--ruled-lines),
+    linear-gradient(to left,   rgba(160, 130, 90, 0.10) 0%, transparent 18%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 0%, transparent 6%, transparent 94%, rgba(0, 0, 0, 0.06) 100%);
+}
+
+/* ── Stacked page edges (the "block" of pages visible at each side) ── */
+.page-stack {
+  position: absolute;
+  top: 2px;
+  z-index: 8;
+  overflow: hidden;
+}
+
+.page-stack--left  { left: 0; }
+.page-stack--right { right: 0; }
+
+.page-stack__layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.page-stack__shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.page-stack--left  .page-stack__shadow { background: linear-gradient(to right, rgba(0,0,0,0.18), transparent); }
+.page-stack--right .page-stack__shadow { background: linear-gradient(to left,  rgba(0,0,0,0.18), transparent); }
+
+/* ── Centre spine crease ── */
+.spine-crease {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent          0%,
+    rgba(0, 0, 0, 0.10) 28%,
+    rgba(0, 0, 0, 0.22) 46%,
+    rgba(0, 0, 0, 0.22) 54%,
+    rgba(0, 0, 0, 0.10) 72%,
+    transparent         100%
+  );
+}
+
+.spine-crease__line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1.5px;
+  height: 100%;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    transparent           0%,
+    rgba(0, 0, 0, 0.35)   8%,
+    rgba(0, 0, 0, 0.45)  50%,
+    rgba(0, 0, 0, 0.35)  92%,
+    transparent          100%
+  );
+}
+
+/* ── Top + bottom page-edge fade overlays ── */
+.book-edge-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.book-edge-fade--top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.12), transparent);
+  border-radius: 4px 6px 0 0;
+}
+
+.book-edge-fade--bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.14), transparent);
+}
+
+/* ── Progress dots strip beneath the book ── */
+.progress-dots {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 20;
+}
+
+.progress-dot {
+  height: 7px;
+  border-radius: 999px;
+  transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.progress-dot--inactive {
+  width: 7px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* active width + colour set inline (driven by bookColour) */
+.progress-dot--active {
+  width: 24px;
+}
