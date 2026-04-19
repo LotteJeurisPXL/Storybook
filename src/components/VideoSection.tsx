@@ -1,10 +1,7 @@
 import React from "react";
 import { Player } from "@remotion/player";
 import { StoryBook } from "../video/StoryBook";
-import { defaultInputProps, scenes } from "../video/Index";
-import type { VideoProps } from "../types";
-
-type StoryBookInputProps = typeof defaultInputProps;
+import { scenes, type StoryBookInputProps } from "../video/Index";
 
 const VideoComposition: React.FC<StoryBookInputProps> = (props) => (
   <StoryBook {...props} scenes={scenes} />
@@ -15,16 +12,10 @@ function totalDuration(props: StoryBookInputProps) {
 }
 
 interface VideoSectionProps {
-  videoProps: VideoProps;
+  storyBookProps: StoryBookInputProps;
 }
 
-export function VideoSection({ videoProps }: VideoSectionProps) {
-  const storyBookProps: StoryBookInputProps = {
-    ...defaultInputProps,
-    // Reuse existing UI colour control as the book accent in StoryBook.
-    bookColour: videoProps.color,
-  };
-
+export function VideoSection({ storyBookProps }: VideoSectionProps) {
   return (
     <section className="video-section">
       <div className="video-inner">

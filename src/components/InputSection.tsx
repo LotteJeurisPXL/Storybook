@@ -1,35 +1,43 @@
-import { TextInput } from "./TextInput";
 import { SliderInput } from "./SliderInput";
 import { ColorInput } from "./ColorInput";
-import { NumberInput } from "./NumberInput";
 import { SelectInput } from "./SelectInput";
-import { ToggleInput } from "./ToggleInput";
-import type { VideoProps, AnimationStyle } from "../types";
+import { CONTENT_SCENE_KEY, defaultInputProps, normalizeSceneOrder, sceneDefinitions, type SceneKey, type StoryBookInputProps } from "../video/Index";
 
-const ANIMATION_OPTIONS = [
-  { value: "fade", label: "Fade In" },
-  { value: "slide", label: "Slide Up" },
-  { value: "bounce", label: "Bounce" },
-  { value: "typewriter", label: "Typewriter" },
+const LANGUAGE_OPTIONS = [
+  { value: "en", label: "English" },
+  { value: "nl", label: "Nederlands" },
 ];
 
 interface InputSectionProps {
-  videoProps: VideoProps;
-  onUpdate: (patch: Partial<VideoProps>) => void;
+  storyBookProps: StoryBookInputProps;
+  onUpdate: (patch: Partial<StoryBookInputProps>) => void;
 }
 
-export function InputSection({ videoProps, onUpdate }: InputSectionProps) {
-  const { text, color, durationInFrames, fps, animation, showBackground } = videoProps;
-  const durationSeconds = (durationInFrames / fps).toFixed(1);
+function moveScene(order: SceneKey[], index: number, direction: -1 | 1) {
+  if (index === 0) {
+    return order;
+  }
+
+  const nextIndex = index + direction;
+
+  if (nextIndex <= 0 || nextIndex >= order.length) {
+    return order;
+  }
+
+  const nextOrder = [...order];
+  [nextOrder[index], nextOrder[nextIndex]] = [nextOrder[nextIndex], nextOrder[index]];
+  return normalizeSceneOrder(nextOrder);
+}
+
+export function InputSection({ storyBookProps, onUpdate }: InputSectionProps) {
+  const { sceneOrder, sceneDuration, bookColour, accentColour, language } = storyBookProps;
+  const durationSeconds = (sceneDuration / 30).toFixed(1);
+
+  const sceneLabels = new Map(sceneDefinitions.map((scene) => [scene.key, scene.label]));
 
   function handleReset() {
     onUpdate({
-      text: "Hello, Remotion!",
-      color: "#00d4ff",
-      durationInFrames: 90,
-      fps: 30,
-      animation: "fade",
-      showBackground: true,
+      ...defaultInputProps,
     });
   }
 
@@ -43,27 +51,85 @@ export function InputSection({ videoProps, onUpdate }: InputSectionProps) {
           </button>
         </div>
 
-        {/* Group 1 — Text & Content */}
+        {/* Group 1 — Scene order */}
         <div className="control-group">
           <h3 className="group-label">
-            <span className="group-dot" /> Text &amp; Content
+            <span className="group-dot" /> Scene Order
           </h3>
-          <div className="control-grid">
-            <TextInput
-              label="Display Text"
-              value={text}
-              onChange={(v) => onUpdate({ text: v })}
-              placeholder="Enter your text…"
-              hint="Shown in the video composition"
-            />
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {sceneOrder.map((sceneKey, index) => {
+              const label = sceneLabels.get(sceneKey) ?? sceneKey;
+              const isFixedContent = sceneKey === CONTENT_SCENE_KEY;
+              const canMoveUp = !isFixedContent && index > 1;
+              const canMoveDown = !isFixedContent && index < sceneOrder.length - 1;
 
-            <SelectInput
-              label="Animation Style"
-              value={animation}
-              options={ANIMATION_OPTIONS}
-              hint="How the text enters the scene"
-              onChange={(v) => onUpdate({ animation: v as AnimationStyle })}
-            />
+              return (
+                <div
+                  key={sceneKey}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    border: "1px solid var(--border)",
+                    borderRadius: 14,
+                    padding: "10px 12px",
+                    background: "var(--bg-base)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 34,
+                      height: 34,
+                      borderRadius: 999,
+                      display: "grid",
+                      placeItems: "center",
+                      background: "var(--accent-light)",
+                      color: "var(--accent-dark)",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {index + 1}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>{label}</div>
+                    <div style={{ fontSize: 12, color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                      {sceneKey}
+                    </div>
+                    {isFixedContent && (
+                      <div style={{ fontSize: 11, color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                        Fixed first scene
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      type="button"
+                      className="num-btn"
+                      aria-label={`Move ${sceneKey} up`}
+                      disabled={!canMoveUp}
+                      onClick={() => onUpdate({ sceneOrder: moveScene(sceneOrder, index, -1) })}
+                      style={{ opacity: canMoveUp ? 1 : 0.35, cursor: canMoveUp ? "pointer" : "not-allowed" }}
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      className="num-btn"
+                      aria-label={`Move ${sceneKey} down`}
+                      disabled={!canMoveDown}
+                      onClick={() => onUpdate({ sceneOrder: moveScene(sceneOrder, index, 1) })}
+                      style={{ opacity: canMoveDown ? 1 : 0.35, cursor: canMoveDown ? "pointer" : "not-allowed" }}
+                    >
+                      ↓
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+            <p className="control-hint">Reordering changes chapter and page numbers automatically.</p>
           </div>
         </div>
 
@@ -74,17 +140,25 @@ export function InputSection({ videoProps, onUpdate }: InputSectionProps) {
           </h3>
           <div className="control-grid">
             <ColorInput
-              label="Accent Colour"
-              value={color}
-              onChange={(v) => onUpdate({ color: v })}
-              hint="Primary colour used in the composition"
+              label="Book Cover Colour"
+              value={bookColour}
+              onChange={(v) => onUpdate({ bookColour: v })}
+              hint="Controls the hardcover, table glow, and progress dots"
             />
 
-            <ToggleInput
-              label="Show Background"
-              value={showBackground}
-              hint="Toggle the gradient background layer"
-              onChange={(v) => onUpdate({ showBackground: v })}
+            <ColorInput
+              label="Page Accent Colour"
+              value={accentColour}
+              onChange={(v) => onUpdate({ accentColour: v })}
+              hint="Used throughout the page content and scene styling"
+            />
+
+            <SelectInput
+              label="Language"
+              value={language}
+              options={LANGUAGE_OPTIONS}
+              hint="Switch the scene copy between English and Dutch"
+              onChange={(v) => onUpdate({ language: v as StoryBookInputProps["language"] })}
             />
           </div>
         </div>
@@ -96,25 +170,15 @@ export function InputSection({ videoProps, onUpdate }: InputSectionProps) {
           </h3>
           <div className="control-grid">
             <SliderInput
-              label="Duration"
-              value={durationInFrames}
-              min={30}
+              label="Scene Length"
+              value={sceneDuration}
+              min={60}
               max={300}
               step={1}
               unit=" fr"
-              tickLabels={["30fr", "165fr", "300fr"]}
-              onChange={(v) => onUpdate({ durationInFrames: v })}
-              hint={`${durationSeconds}s at ${fps} fps`}
-            />
-            <NumberInput
-              label="Frame Rate"
-              value={fps}
-              min={12}
-              max={60}
-              step={1}
-              unit=" fps"
-              hint="12–60 fps"
-              onChange={(v) => onUpdate({ fps: v })}
+              tickLabels={["60fr", "180fr", "300fr"]}
+              onChange={(v) => onUpdate({ sceneDuration: v })}
+              hint={`${durationSeconds}s visible per scene at 30 fps`}
             />
           </div>
         </div>

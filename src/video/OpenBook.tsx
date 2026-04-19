@@ -178,15 +178,16 @@ export const PageSurface: React.FC<{
   children?: React.ReactNode;
 }> = ({ side, children }) => (
   <div className={`page-surface page-surface--${side}`}>
+    {/* Clipped parchment background — texture stays within the page bounds */}
+    <div className="page-surface__bg" />
     {/*
-     * Two-level fill wrapper:
-     *  - Outer (position absolute, inset 0): anchors to PageSurface bounds.
-     *  - Inner (.page-surface__fill, position absolute, inset 0): creates a
-     *    fresh absolute containing block so that PageFlip's flip-root
-     *    (which may be position:relative) doesn't push BookPage's inset:0
-     *    content below the surface top.
+     * Content layer: overflow:visible so the flip leaf can arc
+     * past the page edge and over the cover during a turn.
+     * The inner .page-surface__fill creates an absolute containing block
+     * so BookPage's inset:0 always resolves from the surface top-left,
+     * regardless of PageFlip's flip-root positioning.
      */}
-    <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+    <div style={{ position: "absolute", inset: 0, overflow: "visible" }}>
       <div className="page-surface__fill">
         {children}
       </div>
@@ -215,9 +216,9 @@ export const OpenBook: React.FC<OpenBookProps> = ({
   const bookW = Math.round(width  * scale);
   const bookH = Math.round(height * scale * 0.9);
 
-  const overhang = Math.round((bookW / 1920) * COVER_OVERHANG  * 2.0);
+  const overhang = Math.round((bookW / 1920) * COVER_OVERHANG * 2.0);
   const coverThickness = Math.round((bookW / 1920) * COVER_THICKNESS * 2.5);
-  const pageStackW = Math.round((bookW / 1920) * PAGE_STACK_W    * 2.0);
+  const pageStackW = Math.round((bookW / 1920) * PAGE_STACK_W * 2.0);
 
   const coverW = bookW + overhang * 2;
   const coverH = bookH + overhang * 2;

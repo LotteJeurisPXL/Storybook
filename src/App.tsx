@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import type { VideoProps, Theme } from "./types";
+import type { Theme } from "./types";
 import { Header } from "./components/Header";
 import { Introduction } from "./components/Introduction";
 import { VideoSection } from "./components/VideoSection";
 import { InputSection } from "./components/InputSection";
-import { scenes } from "./video/Index";
+import { defaultInputProps, normalizeSceneOrder, type StoryBookInputProps } from "./video/Index";
 
 export default function App() {
   // ── Theme ──────────────────────────────────────────────
@@ -22,17 +22,18 @@ export default function App() {
   }
 
   // ── Video composition state ────────────────────────────
-  const [videoProps, setVideoProps] = useState<VideoProps>({
-    text: "Hello, Remotion!",
-    color: "#00d4ff",
-    durationInFrames: 90,
-    fps: 30,
-    animation: "fade",
-    showBackground: true,
-  });
+  const [storyBookProps, setStoryBookProps] = useState<StoryBookInputProps>(defaultInputProps);
 
-  function handleUpdate(patch: Partial<VideoProps>) {
-    setVideoProps((prev) => ({ ...prev, ...patch }));
+  function handleUpdate(patch: Partial<StoryBookInputProps>) {
+    setStoryBookProps((prev) => {
+      const next = { ...prev, ...patch };
+
+      if (patch.sceneOrder) {
+        next.sceneOrder = normalizeSceneOrder(patch.sceneOrder);
+      }
+
+      return next;
+    });
   }
 
   return (
@@ -40,8 +41,8 @@ export default function App() {
       <Header theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Introduction />
-        <VideoSection videoProps={videoProps} />
-        <InputSection videoProps={videoProps} onUpdate={handleUpdate} />
+        <VideoSection storyBookProps={storyBookProps} />
+        <InputSection storyBookProps={storyBookProps} onUpdate={handleUpdate} />
       </main>
       <footer className="site-footer">
         <p>

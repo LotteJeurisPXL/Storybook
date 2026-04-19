@@ -1,82 +1,217 @@
 /**
  * scenes/SeminarsScene.tsx
  *
- * Left  → recent sessions list
- * Right → topic tag cloud + intro text
+ * Left  → first-year seminars
+ * Right → second-year seminars
  */
 
-import React from "react";
-import { BookPage, StorySection, StoryTag, StoryList } from "../BookPage";
-import type { ScenePages } from "../StoryBook";
+import { BookPage, formatChapterLabel } from "../BookPage";
+import type { SceneContext, ScenePages } from "../StoryBook";
+import { SeminarCard, type SeminarCardData } from "../components/SeminarCard";
 
-const copy = {
+type Lang = "en" | "nl";
+
+interface SeminarCopy {
+  chapterTitle: string;
+  title: string;
+  subtitle: string;
+  year1Label: string;
+  year2Label: string;
+  year1Seminars: SeminarCardData[];
+  year2Seminars: SeminarCardData[];
+}
+
+const copy: Record<Lang, SeminarCopy> = {
   en: {
-    chapter:  "Chapter II · Learning",
-    title:    "Seminars & Workshops",
-    subtitle: "Continuous learning is at the heart of what we do.",
-    s1:       "Recent Sessions",
-    s2:       "Topics Covered",
-    intro:    "Our sessions bring together practitioners and thinkers to explore what's next — in technology, leadership, and craft.",
-    sessions: [
-      "AI & Ethics in the Workplace",
-      "Agile at Scale",
-      "Green Software Engineering",
-      "Leadership Communication",
-      "Design Thinking Intensive",
+    chapterTitle: "Seminars",
+    subtitle: "A year-by-year overview of the sessions that shaped my growth.",
+    year1Label: "Year 1 Seminars",
+    year2Label: "Year 2 Seminars",
+    year1Seminars: [
+      {
+        title: "Data Foundations for Product Teams",
+        company: "Capgemini",
+        companyMark: "CG",
+        description: "A practical primer on data pipelines, governance, and business alignment.",
+        date: "Oct 2023",
+      },
+      {
+        title: "Agile Collaboration in Hybrid Teams",
+        company: "Delaware",
+        companyMark: "DE",
+        description: "How cross-functional teams keep momentum through clear roles and rituals.",
+        date: "Dec 2023",
+      },
+      {
+        title: "Designing with Accessibility First",
+        company: "iO",
+        companyMark: "iO",
+        description: "Concrete design and development tactics for more inclusive digital products.",
+        date: "Feb 2024",
+      },
+      {
+        title: "Cloud Patterns for Modern Apps",
+        company: "Cegeka",
+        companyMark: "CE",
+        description: "From monolith to microservices, with examples of resilient deployment setups.",
+        date: "Apr 2024",
+      },
     ],
-    topics: ["Agile", "AI", "Leadership", "Sustainability", "DevOps", "UX", "Data"],
+    year2Seminars: [
+      {
+        title: "Data Engineering at Scale",
+        company: "AE",
+        companyMark: "AE",
+        description: "ETL architecture choices and monitoring patterns for long-term maintainability.",
+        date: "Sep 2024",
+      },
+      {
+        title: "Responsible AI in Real Products",
+        company: "ML6",
+        companyMark: "M6",
+        description: "Balancing performance, explainability, and user trust in AI-enabled systems.",
+        date: "Nov 2024",
+      },
+      {
+        title: "Security by Design Workshop",
+        company: "NVISO",
+        companyMark: "NV",
+        description: "Threat modeling techniques and secure coding habits for daily engineering work.",
+        date: "Jan 2025",
+      },
+      {
+        title: "Leadership Through Feedback",
+        company: "Cronos",
+        companyMark: "CR",
+        description: "Building a growth culture through constructive peer feedback and clear ownership.",
+        date: "Mar 2025",
+      },
+    ],
   },
   nl: {
-    chapter:  "Hoofdstuk II · Leren",
-    title:    "Seminars & Workshops",
-    subtitle: "Voortdurend leren staat centraal in wat we doen.",
-    s1:       "Recente Sessies",
-    s2:       "Behandelde Onderwerpen",
-    intro:    "Onze sessies brengen beoefenaars en denkers samen om te verkennen wat er komen gaat — in technologie, leiderschap en vakmanschap.",
-    sessions: [
-      "AI & Ethiek op de Werkvloer",
-      "Agile op Schaal",
-      "Groene Software Engineering",
-      "Leiderschapscommunicatie",
-      "Design Thinking Intensief",
+    chapterTitle: "Seminars",
+    subtitle: "Een overzicht per jaar van de sessies die mijn groei mee bepaalden.",
+    year1Label: "Seminars Jaar 1",
+    year2Label: "Seminars Jaar 2",
+    year1Seminars: [
+      {
+        title: "Datafundamenten voor Productteams",
+        company: "Capgemini",
+        companyMark: "CG",
+        description: "Een praktische introductie in datapipelines, governance en businessafstemming.",
+        date: "okt 2023",
+      },
+      {
+        title: "Agile Samenwerking in Hybride Teams",
+        company: "Delaware",
+        companyMark: "DE",
+        description: "Hoe cross-functionele teams vaart houden met duidelijke rollen en ritmes.",
+        date: "dec 2023",
+      },
+      {
+        title: "Toegankelijk Ontwerpen Vanaf De Start",
+        company: "iO",
+        companyMark: "iO",
+        description: "Concreet ontwerp- en ontwikkeladvies voor inclusieve digitale producten.",
+        date: "feb 2024",
+      },
+      {
+        title: "Cloudpatronen voor Moderne Apps",
+        company: "Cegeka",
+        companyMark: "CE",
+        description: "Van monoliet naar microservices met voorbeelden van veerkrachtige deploys.",
+        date: "apr 2024",
+      },
     ],
-    topics: ["Agile", "AI", "Leiderschap", "Duurzaamheid", "DevOps", "UX", "Data"],
+    year2Seminars: [
+      {
+        title: "Data Engineering op Schaal",
+        company: "AE",
+        companyMark: "AE",
+        description: "ETL-architectuurkeuzes en monitoringpatronen voor langdurig onderhoud.",
+        date: "sep 2024",
+      },
+      {
+        title: "Verantwoorde AI in Echte Producten",
+        company: "ML6",
+        companyMark: "M6",
+        description: "Balans tussen performantie, uitlegbaarheid en gebruikersvertrouwen.",
+        date: "nov 2024",
+      },
+      {
+        title: "Security by Design Workshop",
+        company: "NVISO",
+        companyMark: "NV",
+        description: "Threat modeling en veilige coding-gewoontes voor dagelijks werk.",
+        date: "jan 2025",
+      },
+      {
+        title: "Leiderschap via Feedback",
+        company: "Cronos",
+        companyMark: "CR",
+        description: "Een groeicultuur bouwen met constructieve feedback en duidelijke ownership.",
+        date: "mrt 2025",
+      },
+    ],
   },
 };
 
-export function seminars(lang: "en" | "nl"): ScenePages {
+export function seminars(lang: "en" | "nl", accent: string, context: SceneContext): ScenePages {
   const t = copy[lang];
+  const chapter = formatChapterLabel(lang, context.chapterNumber, t.chapterTitle);
 
   const left = (
     <BookPage
-      chapter={t.chapter}
-      title={t.title}
+      chapter={chapter}
+      title={t.year1Label}
       subtitle={t.subtitle}
       icon="🎓"
-      pageNumber={3}
-      accent="#6dcfa0"
+      pageNumber={context.leftPageNumber}
+      accent={accent}
     >
-      <StorySection heading={t.s1} accent="#6dcfa0">
-        <StoryList items={t.sessions} accent="#1f9e63" bullet="✦" />
-      </StorySection>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+            gap: 10,
+            alignItems: "stretch",
+          }}
+        >
+          {t.year1Seminars.map((seminar) => (
+            <SeminarCard
+              key={`${seminar.title}-${seminar.date}`}
+              seminar={seminar}
+              accent={accent}
+            />
+          ))}
+        </div>
     </BookPage>
   );
 
   const right = (
     <BookPage
-      chapter={t.chapter}
-      title=" "
-      pageNumber={4}
-      accent="#1f9e63"
+      chapter={chapter}
+      title={t.year2Label}
+      subtitle={t.subtitle}
+      pageNumber={context.rightPageNumber}
+      accent={accent}
     >
-      <StorySection heading={t.s2} accent="#1f9e63">
-        <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: "0.86rem", color: "#5a4e38", lineHeight: 1.7, marginBottom: 18 }}>
-          {t.intro}
-        </p>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {t.topics.map((tag) => <StoryTag key={tag} label={tag} accent="#1f9e63" />)}
-        </div>
-      </StorySection>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+          gap: 10,
+          alignItems: "stretch",
+        }}
+      >
+        {t.year2Seminars.map((seminar) => (
+          <SeminarCard
+            key={`${seminar.title}-${seminar.date}`}
+            seminar={seminar}
+            accent={accent}
+          />
+        ))}
+      </div>
     </BookPage>
   );
 

@@ -27,6 +27,11 @@ export const T = {
   gold:       "#b8860b",
 };
 
+export function formatChapterLabel(lang: "en" | "nl", chapterNumber: number, title: string) {
+  const prefix = lang === "nl" ? "Hoofdstuk" : "Chapter";
+  return `${prefix} ${chapterNumber} · ${title}`;
+}
+
 // ─── OrnamentDivider ──────────────────────────────────────────────────────────
 
 const OrnamentDivider: React.FC<{ colour?: string }> = ({ colour = T.gold }) => (

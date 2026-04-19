@@ -37,6 +37,19 @@ export interface ScenePages {
   right: React.ReactNode;
 }
 
+export interface SceneContext {
+  chapterNumber: number;
+  leftPageNumber: number;
+  rightPageNumber: number;
+  sceneOrder: string[];
+}
+
+export type SceneFactory = (
+  lang: "en" | "nl",
+  accent: string,
+  context: SceneContext,
+) => ScenePages;
+
 export interface StoryBookProps {
   sceneOrder:    string[];
   sceneDuration: number;
@@ -45,7 +58,8 @@ export interface StoryBookProps {
    *  Default 70 frames @ 30 fps ≈ 2.3 seconds. */
   flipDuration:  number;
   bookColour:    string;
-  scenes:        Record<string, (lang: "en" | "nl") => ScenePages>;
+  accentColour:  string;
+  scenes:        Record<string, SceneFactory>;
   language:      "en" | "nl";
 }
 
@@ -84,6 +98,7 @@ export const StoryBook: React.FC<StoryBookProps> = ({
   sceneDuration,
   flipDuration,
   bookColour,
+  accentColour,
   scenes,
   language,
 }) => {
@@ -111,8 +126,26 @@ export const StoryBook: React.FC<StoryBookProps> = ({
   const currentKey = sceneOrder[currentSlot] ?? sceneOrder[0];
   const nextKey    = sceneOrder[Math.min(currentSlot + 1, totalScenes - 1)] ?? currentKey;
 
-  const currentPages = scenes[currentKey]?.(language) ?? { left: null, right: null };
-  const nextPages    = scenes[nextKey]?.(language)    ?? { left: null, right: null };
+  const sceneIndexByKey = new Map(sceneOrder.map((key, index) => [key, index]));
+  const currentSceneIndex = sceneIndexByKey.get(currentKey) ?? currentSlot;
+  const nextSceneIndex = sceneIndexByKey.get(nextKey) ?? Math.min(currentSlot + 1, totalScenes - 1);
+
+  const currentSceneContext = {
+    chapterNumber: currentSceneIndex + 1,
+    leftPageNumber: currentSceneIndex * 2 + 1,
+    rightPageNumber: currentSceneIndex * 2 + 2,
+    sceneOrder,
+  };
+
+  const nextSceneContext = {
+    chapterNumber: nextSceneIndex + 1,
+    leftPageNumber: nextSceneIndex * 2 + 1,
+    rightPageNumber: nextSceneIndex * 2 + 2,
+    sceneOrder,
+  };
+
+  const currentPages = scenes[currentKey]?.(language, accentColour, currentSceneContext) ?? { left: null, right: null };
+  const nextPages    = scenes[nextKey]?.(language, accentColour, nextSceneContext)    ?? { left: null, right: null };
 
   // ── Left page timing ─────────────────────────────────────────────────────
   // Switch at midpoint (progress >= 0.5) so the update is hidden behind the

@@ -20,6 +20,7 @@
   flex-direction: column;
   overflow: hidden;
   font-family: var(--font-body);
+  font-size: large;
 }
 
 /* ── Running header row ── */
@@ -29,11 +30,12 @@
   justify-content: space-between;
   margin-bottom: 14px;
   flex-shrink: 0;
+  font-size: large;
 }
 
 .book-page__chapter {
   font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-size: 1.2 rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   /* colour set inline via accent */
@@ -60,7 +62,7 @@
 .book-page__title {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.9rem;
+  font-size: 1.8 rem;
   color: var(--ink);
   margin: 0 0 5px;
   line-height: 1.15;
@@ -68,7 +70,7 @@
 
 .book-page__subtitle {
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: larger;
   color: var(--ink-light);
   margin: 0;
   line-height: 1.5;
@@ -83,6 +85,7 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  font-size: x-large;
 }
 
 .book-page__body--two-column {
@@ -111,6 +114,17 @@
   white-space: nowrap;
 }
 
+/* Left pages: number sits on the outer (left) edge like a real spread */
+.page-surface--left .book-page__footer {
+  justify-content: flex-start;
+}
+
+.page-surface--left .book-page__page-number {
+  order: -1;
+  margin-left: 0;
+  margin-right: 16px;
+}
+
 /* ════════════════════════════════════════════════════════════
    OrnamentDivider SVG
 ════════════════════════════════════════════════════════════ */
@@ -126,6 +140,7 @@
 
 .story-section {
   margin-bottom: 22px;
+  font-size: x-large;
 }
 
 .story-section__heading-row {
@@ -146,7 +161,7 @@
 
 .story-section__label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: large;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 500;
@@ -162,7 +177,6 @@
 
 .story-section__body {
   font-family: var(--font-body);
-  font-size: 0.88rem;
   color: var(--ink-mid);
   line-height: 1.7;
 }
@@ -177,7 +191,7 @@
   margin: 0 6px 6px 0;
   border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: large;
   letter-spacing: 0.07em;
   /* border + background + colour set inline via accent */
 }
@@ -234,14 +248,12 @@
   gap: 10px;
   padding: 6px 0;
   font-family: var(--font-body);
-  font-size: 0.88rem;
   color: var(--ink-mid);
   line-height: 1.5;
   /* border-bottom set inline via ink token */
 }
 
 .story-list__bullet {
-  font-size: 0.6rem;
   flex-shrink: 0;
   /* colour set inline via accent */
 }
