@@ -1,4 +1,3 @@
-import React from "react";
 import { BookPage, StorySection, formatChapterLabel } from "../BookPage";
 import type { SceneContext, ScenePages } from "../StoryBook";
 
@@ -19,8 +18,26 @@ const copy = {
   },
 } as const;
 
-function labelFromKey(key: string): string {
-  return key
+const sceneLabels = {
+  en: {
+    introduction: "Introduction",
+    seminars: "Seminars",
+    internationalization: "Internationalization",
+    volunteering: "Volunteering",
+    innovation: "Innovation",
+  },
+  nl: {
+    introduction: "Introductie",
+    seminars: "Seminars",
+    internationalization: "Internationalisering",
+    volunteering: "Vrijwilligerswerk",
+    innovation: "Innovatie",
+  },
+} as const;
+
+function labelFromKey(key: string, lang: Lang): string {
+  const labels = sceneLabels[lang] as Record<string, string>;
+  return labels[key] || key
     .replace(/[-_]/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
@@ -29,7 +46,7 @@ export function content(lang: Lang, accent: string, context: SceneContext): Scen
   const t = copy[lang];
   const chapter = formatChapterLabel(lang, context.chapterNumber, t.chapterTitle);
 
-  const orderedScenes = context.sceneOrder.filter((key) => key !== "content");
+  const orderedScenes = context.sceneOrder.filter((key) => key !== "content" && key !== "opening");
 
   const left = <></>;
 
@@ -38,7 +55,6 @@ export function content(lang: Lang, accent: string, context: SceneContext): Scen
       chapter={chapter}
       title={t.title}
       subtitle={t.subtitle}
-      icon="☰"
       pageNumber={context.rightPageNumber}
       accent={accent}
     >
@@ -72,7 +88,7 @@ export function content(lang: Lang, accent: string, context: SceneContext): Scen
                   color: "#5a4e38",
                 }}
               >
-                {labelFromKey(key)}
+                {labelFromKey(key, lang)}
               </span>
             </div>
           ))}

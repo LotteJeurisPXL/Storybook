@@ -193,7 +193,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 
 .header-inner {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: var(--space-4) var(--space-6);
   display: flex;
@@ -330,7 +330,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 ═══════════════════════════════════════════════════════════ */
 
 .intro-section {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: var(--space-20) var(--space-6) var(--space-16);
   animation: fadeUp var(--dur-slow) var(--ease-smooth) 0.05s both;
@@ -442,7 +442,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 ═══════════════════════════════════════════════════════════ */
 
 .video-section {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 var(--space-6) var(--space-16);
   animation: fadeUp var(--dur-slow) var(--ease-smooth) 0.15s both;
@@ -512,7 +512,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 ═══════════════════════════════════════════════════════════ */
 
 .controls-section {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 var(--space-6) var(--space-20);
   animation: fadeUp var(--dur-slow) var(--ease-smooth) 0.25s both;
@@ -983,7 +983,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 ═══════════════════════════════════════════════════════════ */
 
 .site-footer {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: var(--space-8) var(--space-6);
   border-top: 1.5px solid var(--border);

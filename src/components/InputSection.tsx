@@ -1,12 +1,16 @@
 import { SliderInput } from "./SliderInput";
 import { ColorInput } from "./ColorInput";
 import { SelectInput } from "./SelectInput";
-import { CONTENT_SCENE_KEY, defaultInputProps, normalizeSceneOrder, sceneDefinitions, type SceneKey, type StoryBookInputProps } from "../video/Index";
+import { defaultInputProps, normalizeSceneOrder, sceneDefinitions, type SceneKey, type StoryBookInputProps } from "../video/Index";
 
 const LANGUAGE_OPTIONS = [
   { value: "en", label: "English" },
   { value: "nl", label: "Nederlands" },
 ];
+
+const FIXED_SCENE_KEYS: ReadonlySet<SceneKey> = new Set(
+  sceneDefinitions.filter((scene) => scene.fixed).map((scene) => scene.key as SceneKey),
+);
 
 interface InputSectionProps {
   storyBookProps: StoryBookInputProps;
@@ -15,6 +19,10 @@ interface InputSectionProps {
 
 function moveScene(order: SceneKey[], index: number, direction: -1 | 1) {
   if (index === 0) {
+    return order;
+  }
+
+  if (FIXED_SCENE_KEYS.has(order[index])) {
     return order;
   }
 
@@ -59,9 +67,9 @@ export function InputSection({ storyBookProps, onUpdate }: InputSectionProps) {
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {sceneOrder.map((sceneKey, index) => {
               const label = sceneLabels.get(sceneKey) ?? sceneKey;
-              const isFixedContent = sceneKey === CONTENT_SCENE_KEY;
-              const canMoveUp = !isFixedContent && index > 1;
-              const canMoveDown = !isFixedContent && index < sceneOrder.length - 1;
+              const isFixedScene = FIXED_SCENE_KEYS.has(sceneKey);
+              const canMoveUp = !isFixedScene && index > 1;
+              const canMoveDown = !isFixedScene && index < sceneOrder.length - 1;
 
               return (
                 <div
@@ -96,13 +104,8 @@ export function InputSection({ storyBookProps, onUpdate }: InputSectionProps) {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>{label}</div>
                     <div style={{ fontSize: 12, color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
-                      {sceneKey}
+                      
                     </div>
-                    {isFixedContent && (
-                      <div style={{ fontSize: 11, color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
-                        Fixed first scene
-                      </div>
-                    )}
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
                     <button

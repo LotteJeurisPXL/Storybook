@@ -9,14 +9,14 @@
 import { BookPage, formatChapterLabel } from "../BookPage";
 import type { SceneContext, ScenePages } from "../StoryBook";
 import { EventFeature, type EventFeatureData } from "../components/EventFeature";
-import EventImage from "../../assets/logo.png";
+import HackTheFutureImage from "../../assets/Hackaton.jpg";
+import DDDImage from "../../assets/DomainDrivenDesign.jpg";
 
 type Lang = "en" | "nl";
 
 interface InnovationCopy {
   chapterTitle: string;
-  firstLabel: string;
-  secondLabel: string;
+  heading1: string;
   firstEvent: EventFeatureData;
   secondEvent: EventFeatureData;
 }
@@ -24,52 +24,44 @@ interface InnovationCopy {
 const copy: Record<Lang, InnovationCopy> = {
   en: {
     chapterTitle: "Innovation",
-    heading1: "Description",
-    heading2: "Experience",
+    heading1: "My experience",
     firstEvent: {
-      title: "Community Tech Day",
-      role: "Hands-on digital support for local organisations",
-      description:
-        "A volunteer event focused on helping non-profits with small digital tasks, content updates, and practical advice on improving their online presence.",
+      title: "Hack the Future",
+      role: "Cronos hackathon",
       experience:
-        "It showed me how valuable patient communication is when people need quick support, and how small improvements can make a large difference for local teams.",
-      image: EventImage,
-      imageAlt: "Community Tech Day event image",
+        "I really liked the assignment we got for this hackaton. I might even try and imporve that project " +
+        "in my own time. Just for fun. Unfortunately, we struggled a lot with getting the technology to work. " +
+        "I got a chance to improve during my internship.",
+      image: HackTheFutureImage,
     },
     secondEvent: {
-      title: "Open Workshop Evening",
-      role: "Supporting students through guided project sessions",
-      description:
-        "An evening event where volunteers helped students work through project questions, feedback rounds, and technical blockers in a relaxed workshop setting.",
+      title: "Domain Driven Design",
+      role: "Innovation route",
       experience:
-        "The experience strengthened my confidence in guiding others and reminded me that clear structure and calm encouragement help people move forward faster.",
-      image: EventImage,
-      imageAlt: "Open Workshop Evening event image",
+        "I'm glad I chose this innovation route. DDD is something I don't have a lot of experience with, but I understand its importance." +
+        "I struggled a lot more in the last sessions, because my knowledge & expertise in C# and Java is a lot less than those who studied AON.",
+      image: DDDImage,
     },
   },
   nl: {
     chapterTitle: "Innovatie",
-    heading1: "Samenvatting",
-    heading2: "Ervaring",
+    heading1: "Mijn ervaring",
     firstEvent: {
-      title: "Community Tech Day",
-      role: "Digitale ondersteuning voor lokale organisaties",
-      description:
-        "Een vrijwilligersmoment waarbij we non-profits hielpen met kleine digitale taken, content-updates en praktisch advies om hun online aanwezigheid te verbeteren.",
+      title: "Hack the Future",
+      role: "Cronos hackathon",
       experience:
-        "Ik merkte hoe waardevol geduldige communicatie is wanneer mensen snelle hulp nodig hebben, en hoe kleine verbeteringen een groot verschil kunnen maken voor lokale teams.",
-      image: EventImage,
-      imageAlt: "Afbeelding van Community Tech Day",
+        "Ik vond de opdracht die we voor deze hackathon kregen echt leuk. Misschien ga ik dat project zelfs wel verder uitwerken" +
+        "in mijn vrije tijd. Gewoon voor de lol. Helaas hadden we veel moeite om de technologie aan de praat te krijgen." +
+        "Tijdens mijn stage heb ik de kans gekregen om mezelf dezelfde code te verbeteren.",
+      image: HackTheFutureImage,
     },
     secondEvent: {
-      title: "Open Workshop Avond",
-      role: "Studenten ondersteunen tijdens begeleide projectsessies",
-      description:
-        "Een avondevent waar vrijwilligers studenten hielpen met projectvragen, feedbackrondes en technische blockers in een ontspannen workshopsetting.",
+      title: "Domain Driven Design",
+      role: "Innovatieroute",
       experience:
-        "Die ervaring gaf me meer vertrouwen in het begeleiden van anderen en herinnerde me eraan dat duidelijke structuur en rustige aanmoediging mensen sneller vooruit helpen.",
-      image: EventImage,
-      imageAlt: "Afbeelding van Open Workshop Avond",
+        "Ik ben blij dat ik voor deze innovatieroute heb gekozen. Ik heb nog niet veel ervaring met DDD, maar ik begrijp wel hoe belangrijk het is. " +
+        "Ik had het tijdens de laatste sessies een stuk moeilijker, omdat mijn kennis en ervaring met C# en Java een stuk minder is dan die van degenen die AON hebben gevolgd.",
+      image: DDDImage,
     },
   },
 };
@@ -87,7 +79,7 @@ export function innovation(lang: Lang, accent: string, context: SceneContext): S
       pageNumber={context.leftPageNumber}
       accent={accent}
     >
-        <EventFeature heading1={t.heading1} heading2={t.heading2} event={t.firstEvent} accent={accent} />
+        <EventFeature heading1={t.heading1} event={t.firstEvent} accent={accent} />
     </BookPage>
   );
 
@@ -99,7 +91,7 @@ export function innovation(lang: Lang, accent: string, context: SceneContext): S
       pageNumber={context.rightPageNumber}
       accent={accent}
     >
-        <EventFeature heading1={t.heading1} heading2={t.heading2} event={t.secondEvent} accent={accent} />
+        <EventFeature heading1={t.heading1} event={t.secondEvent} accent={accent} />
     </BookPage>
   );
 

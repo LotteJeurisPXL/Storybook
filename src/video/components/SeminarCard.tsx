@@ -57,24 +57,9 @@ export const SeminarCard: React.FC<SeminarCardProps> = ({ seminar, accent }) => 
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }}>
-        <div
-          aria-hidden="true"
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 8,
-            border: `1px solid ${accent}60`,
-            background: `radial-gradient(circle at 35% 35%, #ffffff, ${accent}36)`,
-            display: "grid",
-            placeItems: "center",
-            color: accent,
-            fontFamily: "'DM Sans', system-ui, sans-serif",
-            fontWeight: 700,
-            letterSpacing: "0.04em",
-          }}
-        >
-          {seminar.companyMark}
-        </div>
+        
+          <img src={seminar.companyMark} alt={seminar.company} width="50" height="50" />
+       
 
         <p
           style={{

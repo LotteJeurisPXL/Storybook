@@ -41,8 +41,8 @@ export default function App() {
       <Header theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Introduction />
-        <VideoSection storyBookProps={storyBookProps} />
         <InputSection storyBookProps={storyBookProps} onUpdate={handleUpdate} />
+        <VideoSection storyBookProps={storyBookProps} />
       </main>
       <footer className="site-footer">
         <p>

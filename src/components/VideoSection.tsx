@@ -18,6 +18,11 @@ interface VideoSectionProps {
 export function VideoSection({ storyBookProps }: VideoSectionProps) {
   return (
     <section className="video-section">
+      <div className="controls-header">
+        <h2 className="controls-title">Video Preview</h2>
+        <hr />
+      </div>
+      <br />
       <div className="video-inner">
         <div className="video-frame">
           <div className="frame-corner tl" />

@@ -1,27 +1,12 @@
 /**
- * StoryBook.tsx
+ * StoryBook.tsx — timeline orchestrator.
  *
- * Top-level Remotion component — timeline orchestrator.
- *
- * ── Left page timing fix ──────────────────────────────────────
- * During a page flip the LEFT page must switch from the outgoing
- * scene to the incoming scene at EXACTLY the midpoint (progress=0.5),
- * when the turning leaf is edge-on and nothing is visible.
- * Before the midpoint → left shows currentScene.
- * After  the midpoint → left shows nextScene.
- * ──────────────────────────────────────────────────────────────
- *
- * ── Left / right independent content ─────────────────────────
- * Each scene factory now returns { left, right } — two ReactNodes.
- * Use the BookPage component on each side independently, or render
- * any content you like on either half.
- * ──────────────────────────────────────────────────────────────
- *
- * ── Flip speed ────────────────────────────────────────────────
- * Set flipDuration in Root.tsx defaultInputProps.
- * Default: 70 frames @ 30 fps ≈ 2.3 s.
- * Higher = slower / more dramatic. Lower = snappier.
- * ──────────────────────────────────────────────────────────────
+ * Opening scene:
+ *   IDLE  → full-frame (no OpenBook shell), OpeningAnimation runs
+ *   FLIP-OUT → normal <OpenBook> + <PageFlip>
+ *              outgoing = FlatCoverPage (parchment endpaper)
+ *              incoming = next scene's right page (content visible from frame 0)
+ *              left page switches at midpoint (standard behaviour)
  */
 
 import React from "react";
@@ -31,61 +16,75 @@ import { PageFlip } from "./PageFlip";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-/** What each scene must return — separate content for left and right page */
 export interface ScenePages {
   left:  React.ReactNode;
   right: React.ReactNode;
 }
 
 export interface SceneContext {
-  chapterNumber: number;
-  leftPageNumber: number;
-  rightPageNumber: number;
-  sceneOrder: string[];
+  chapterNumber:    number;
+  leftPageNumber:   number;
+  rightPageNumber:  number;
+  sceneOrder:       string[];
+  bookColour?:      string;
+  sceneDuration?:   number;
+  openingTitle?:    string;
+  openingSubtitle?: string;
 }
 
 export type SceneFactory = (
-  lang: "en" | "nl",
-  accent: string,
+  lang:    "en" | "nl",
+  accent:  string,
   context: SceneContext,
 ) => ScenePages;
 
 export interface StoryBookProps {
-  sceneOrder:    string[];
-  sceneDuration: number;
-  /** Duration of the page-flip animation in frames.
-   *  Adjust here or override via inputProps from the webapp.
-   *  Default 70 frames @ 30 fps ≈ 2.3 seconds. */
-  flipDuration:  number;
-  bookColour:    string;
-  accentColour:  string;
-  scenes:        Record<string, SceneFactory>;
-  language:      "en" | "nl";
+  sceneOrder:       string[];
+  sceneDuration:    number;
+  flipDuration:     number;
+  bookColour:       string;
+  accentColour:     string;
+  scenes:           Record<string, SceneFactory>;
+  language:         "en" | "nl";
+  openingTitle?:    string;
+  openingSubtitle?: string;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function slotFrames(sceneDuration: number, flipDuration: number) {
   return sceneDuration + flipDuration;
 }
 
+// ─── FlatCoverPage ────────────────────────────────────────────────────────────
+// The "outgoing" right page when flipping out of the opening scene.
+// Represents the parchment endpaper of the open cover lying flat.
+
+const FlatCoverPage: React.FC<{ accentColour: string }> = ({ accentColour }) => (
+  <div style={{
+    position: "absolute",
+    inset: 0,
+    backgroundColor: "hsl(38,28%,86%)",
+    backgroundImage: "var(--noise, none)",
+  }}>
+    <div style={{
+      position: "absolute", top: 0, left: 0, bottom: 0, width: 32,
+      background: `linear-gradient(to right, ${accentColour}18, transparent)`,
+    }}/>
+  </div>
+);
+
 // ─── Progress dots ────────────────────────────────────────────────────────────
 
-const ProgressDots: React.FC<{
-  count: number;
-  current: number;
-  colour: string;
-}> = ({ count, current, colour }) => (
+const ProgressDots: React.FC<{ count: number; current: number; colour: string }> = ({
+  count, current, colour,
+}) => (
   <div className="progress-dots">
     {Array.from({ length: count }).map((_, i) => (
       <div
         key={i}
         className={`progress-dot ${i === current ? "progress-dot--active" : "progress-dot--inactive"}`}
-        style={
-          i === current
-            ? { background: colour, boxShadow: `0 0 8px ${colour}88` }
-            : {}
-        }
+        style={i === current ? { background: colour, boxShadow: `0 0 8px ${colour}88` } : {}}
       />
     ))}
   </div>
@@ -94,13 +93,9 @@ const ProgressDots: React.FC<{
 // ─── StoryBook ────────────────────────────────────────────────────────────────
 
 export const StoryBook: React.FC<StoryBookProps> = ({
-  sceneOrder,
-  sceneDuration,
-  flipDuration,
-  bookColour,
-  accentColour,
-  scenes,
-  language,
+  sceneOrder, sceneDuration, flipDuration,
+  bookColour, accentColour, scenes, language,
+  openingTitle, openingSubtitle,
 }) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
@@ -108,15 +103,13 @@ export const StoryBook: React.FC<StoryBookProps> = ({
   const totalScenes = sceneOrder.length;
   const slot = slotFrames(sceneDuration, flipDuration);
 
-  const currentSlot  = Math.min(Math.floor(frame / slot), totalScenes - 1);
-  const frameInSlot  = frame - currentSlot * slot;
-  const isLastScene  = currentSlot === totalScenes - 1;
-  const isFlipping   = !isLastScene && frameInSlot >= sceneDuration;
-  const flipFrame    = frameInSlot - sceneDuration;
+  const currentSlot = Math.min(Math.floor(frame / slot), totalScenes - 1);
+  const frameInSlot = frame - currentSlot * slot;
+  const isLastScene = currentSlot === totalScenes - 1;
+  const isFlipping  = !isLastScene && frameInSlot >= sceneDuration;
+  const flipFrame   = frameInSlot - sceneDuration;
 
-  const rawProgress = isFlipping ? Math.min(flipFrame / flipDuration, 1) : 0;
-
-  // Eased progress — tweak the bezier to change the feel of the flip
+  const rawProgress  = isFlipping ? Math.min(flipFrame / flipDuration, 1) : 0;
   const flipProgress = interpolate(rawProgress, [0, 1], [0, 1], {
     easing: Easing.bezier(0.68, 0, 0.32, 1),
     extrapolateLeft: "clamp",
@@ -126,38 +119,86 @@ export const StoryBook: React.FC<StoryBookProps> = ({
   const currentKey = sceneOrder[currentSlot] ?? sceneOrder[0];
   const nextKey    = sceneOrder[Math.min(currentSlot + 1, totalScenes - 1)] ?? currentKey;
 
-  const sceneIndexByKey = new Map(sceneOrder.map((key, index) => [key, index]));
-  const currentSceneIndex = sceneIndexByKey.get(currentKey) ?? currentSlot;
-  const nextSceneIndex = sceneIndexByKey.get(nextKey) ?? Math.min(currentSlot + 1, totalScenes - 1);
+  const sceneIndexByKey = new Map(sceneOrder.map((key, idx) => [key, idx]));
+  const currentSceneIdx = sceneIndexByKey.get(currentKey) ?? currentSlot;
+  const nextSceneIdx    = sceneIndexByKey.get(nextKey) ?? Math.min(currentSlot + 1, totalScenes - 1);
 
-  const currentSceneContext = {
-    chapterNumber: currentSceneIndex + 1,
-    leftPageNumber: currentSceneIndex * 2 + 1,
-    rightPageNumber: currentSceneIndex * 2 + 2,
-    sceneOrder,
+  function chapterNumberFor(sceneIdx: number): number {
+    if (sceneIdx <= 1) {
+      return 1;
+    }
+
+    return sceneOrder.slice(0, sceneIdx).filter((key) => key !== "opening").length;
+  }
+
+  const extraContext = { bookColour, sceneDuration, openingTitle, openingSubtitle };
+
+  const currentCtx: SceneContext = {
+    chapterNumber: chapterNumberFor(currentSceneIdx),
+    leftPageNumber:  currentSceneIdx * 2 + 1,
+    rightPageNumber: currentSceneIdx * 2 + 2,
+    sceneOrder, ...extraContext,
   };
 
-  const nextSceneContext = {
-    chapterNumber: nextSceneIndex + 1,
-    leftPageNumber: nextSceneIndex * 2 + 1,
-    rightPageNumber: nextSceneIndex * 2 + 2,
-    sceneOrder,
+  const nextCtx: SceneContext = {
+    chapterNumber: chapterNumberFor(nextSceneIdx),
+    leftPageNumber:  nextSceneIdx * 2 + 1,
+    rightPageNumber: nextSceneIdx * 2 + 2,
+    sceneOrder, ...extraContext,
   };
 
-  const currentPages = scenes[currentKey]?.(language, accentColour, currentSceneContext) ?? { left: null, right: null };
-  const nextPages    = scenes[nextKey]?.(language, accentColour, nextSceneContext)    ?? { left: null, right: null };
+  const bookW = Math.round(width  * 0.88);
+  const pageW = Math.round(bookW  / 2);
+  const bookH = Math.round(height * 0.88 * 0.9);
 
-  // ── Left page timing ─────────────────────────────────────────────────────
-  // Switch at midpoint (progress >= 0.5) so the update is hidden behind the
-  // edge-on turning leaf where nothing is visible.
+  // ── Opening scene idle: full-frame, no OpenBook shell ───────────────────
+  if (currentKey === "opening" && !isFlipping) {
+    const openingPages = scenes["opening"]?.(language, accentColour, currentCtx)
+      ?? { left: null, right: null };
+    return (
+      <div style={{ position: "relative", width, height }}>
+        {openingPages.right}
+      </div>
+    );
+  }
+
+  // ── Opening scene flip-out: OpenBook shell + PageFlip ───────────────────
+  // outgoing = FlatCoverPage (parchment endpaper of open cover)
+  // incoming = content scene's right page (visible beneath from the start)
+  // left = null until midpoint, then content scene's left page
+  if (currentKey === "opening" && isFlipping) {
+    const nextPages = scenes[nextKey]?.(language, accentColour, nextCtx)
+      ?? { left: null, right: null };
+
+    const leftPage = flipProgress >= 0.5 ? nextPages.left : null;
+
+    const rightPage = (
+      <PageFlip
+        progress={flipProgress}
+        outgoing={<FlatCoverPage accentColour={accentColour} />}
+        incoming={nextPages.right}
+        pageWidth={pageW}
+        pageHeight={bookH}
+      />
+    );
+
+    return (
+      <div style={{ position: "relative", width, height }}>
+        <OpenBook bookColour={bookColour} leftPage={leftPage} rightPage={rightPage} />
+        <ProgressDots count={totalScenes} current={currentSlot} colour={bookColour} />
+      </div>
+    );
+  }
+
+  // ── All other scenes ─────────────────────────────────────────────────────
+  const currentPages = scenes[currentKey]?.(language, accentColour, currentCtx)
+    ?? { left: null, right: null };
+  const nextPages    = scenes[nextKey]?.(language, accentColour, nextCtx)
+    ?? { left: null, right: null };
+
   const leftPage = isFlipping && flipProgress >= 0.5
     ? nextPages.left
     : currentPages.left;
-
-  // ── Right page ───────────────────────────────────────────────────────────
-  const bookW = Math.round(width * 0.88);
-  const pageW = Math.round(bookW / 2);
-  const bookH = Math.round(height * 0.88 * 0.9);
 
   const rightPage = isFlipping ? (
     <PageFlip

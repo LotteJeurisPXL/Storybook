@@ -17,76 +17,62 @@ const copy: Record<Lang, {
   chapterTitle: string;
   title_left: string;
   title_right: string;
-  subtitle_left: string;
-  subtitle_right: string;
   creatorHeading: string;
   interestsHeading: string;
   learnHeading: string;
-  growthHeading: string;
   traitsHeading: string;
   creatorName: string;
   creatorRole: string;
   creatorBio: string;
   interests: string[];
   learnedAboutSelf: string[];
-  improvements: string[];
   traits: string[];
 }> = {
   en: {
     chapterTitle: "Introduction",
-    title_left: "Introduction",
-    title_right: "What I Learned Along The Way",
-    subtitle_left: "A quick introduction about who I am.",
-    subtitle_right: "Reflections on my journey at PXL.",
+    title_left: "Biography",
+    title_right: "More About Me",
     creatorHeading: "About me",
     interestsHeading: "Interests & Curiosity",
     learnHeading: "What I Learned About Myself",
-    growthHeading: "How I Worked To Improve",
     traitsHeading: "Core Character Traits",
     creatorName: "Lotte Jeuris",
     creatorRole: "Data Engineer",
     creatorBio:
-      "I am energized by turning complex ideas into approachable experiences. I love combining storytelling, design, and code to build things that are both useful and expressive.",
-    interests: ["Human-centered design", "Creative coding", "Visual systems", "Learning psychology", "Community building"],
+      "I started out with a Full stack developers' degree, obtained at SyntraPXL. Currently I am expanding " +
+      "my knowledge with a professional bachelor in Applied Computer Science at PXL. I have a strong " +
+      "interest in Big Data & Artificial Intelligence. In my spare time, I volunteer at CoderDojo to help " +
+      "children learn to code. I am socially engaged, critical, detail-oriented and eager to learn",
+    interests: ["Data engineering", "Data analysis", "ArtificiaI Intelligence"],
     learnedAboutSelf: [
-      "I do my best work when I can connect structure with creativity.",
-      "I thrive in collaborative teams where feedback is open and practical.",
-      "I stay motivated by meaningful impact, not just delivery speed.",
+      "I perform best when structure and creativity come together.",
+      "I thrive in teams where feedback is open and specific.",
+      "I draw motivation from making a meaningful impact, not just from speed.",
     ],
-    improvements: [
-      "Practiced clearer communication under pressure.",
-      "Built stronger planning habits for long-running projects.",
-      "Learned to balance quality and momentum in decision-making.",
-    ],
-    traits: ["Curious", "Reliable", "Reflective", "Empathetic", "Resilient"],
+    traits: ["Analytical", "Reliable", "Detail-oriented", "Teamwork", "Curious", "Independent", "Helpful"],
   },
   nl: {
     chapterTitle: "Introductie",
-    title_left: "Introductie",
-    title_right: "Wat Ik Over Mezelf Leerde",
-    subtitle_left: "Een korte blik op de maker en het traject achter dit werk.",
-    subtitle_right: "Reflecties over mijn reis bij PXL.",
+    title_left: "Biografie",
+    title_right: "Meer over mezelf",
     creatorHeading: "Maker",
     interestsHeading: "Interesses & Nieuwsgierigheid",
     learnHeading: "Wat Ik Over Mezelf Leerde",
-    growthHeading: "Waar Ik Gericht Aan Werkte",
     traitsHeading: "Kernkaraktereigenschappen",
     creatorName: "Lotte Jeuris",
     creatorRole: "Data Engineer",
     creatorBio:
-      "Ik krijg energie van complexe ideeën vertalen naar heldere ervaringen. Ik combineer graag storytelling, design en code om iets te bouwen dat tegelijk nuttig en expressief is.",
-    interests: ["Mensgericht ontwerp", "Creative coding", "Visuele systemen", "Leerpsychologie", "Community building"],
+     "Ik ben gestart met een Full stack developer diploma, behaald bij SyntraPXL.  Momenteel vervolledig ik mijn kennis via " +
+      "een professionele bachelor Toegepaste Informatica aan de PXL. Ik heb een sterke interesse in Big Data & AI." +
+      "In mijn vrije tijd ben ik vrijwilliger bij CoderDojo waar ik kinderen help leren programmeren. " +
+      "Ik ben sociaal-geëngageerd, kritisch, detailgericht en leergierig.",
+    interests: ["Data engineering", "Data analyse", "Artificiële Intelligentie"],
     learnedAboutSelf: [
       "Ik presteer het best wanneer structuur en creativiteit samenkomen.",
       "Ik groei in teams waar feedback open en concreet is.",
       "Ik haal motivatie uit betekenisvolle impact, niet alleen uit snelheid.",
     ],
-    improvements: [
-      "Duidelijker leren communiceren onder druk.",
-      "Sterkere planningsroutines opgebouwd voor lange projecten.",
-      "Kwaliteit en tempo beter leren balanceren bij beslissingen.",
-    ],
-    traits: ["Nieuwsgierig", "Betrouwbaar", "Reflectief", "Empathisch", "Veerkrachtig"],
+    traits: ["Analytisch", "Betrouwbaar", "Detailgericht", "Teamwork", "Nieuwsgierig", "Zelfstandig", "Behulpzaam"],
   },
 };
 
@@ -110,8 +96,6 @@ export function introduction(lang: Lang, accent: string, context: SceneContext):
     <BookPage
       chapter={chapter}
       title={t.title_left}
-      subtitle={t.subtitle_left}
-      icon="✧"
       pageNumber={context.leftPageNumber}
       accent={accent}
     >
@@ -174,8 +158,16 @@ export function introduction(lang: Lang, accent: string, context: SceneContext):
           {t.creatorBio}
         </p>
       </StorySection>
+    </BookPage>
+  );
 
-      <br />
+  const right = (
+    <BookPage
+      chapter={chapter}
+      title={t.title_right}
+      pageNumber={context.rightPageNumber}
+      accent={accent}
+    >
 
       <StorySection heading={t.interestsHeading} accent={accent}>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -184,23 +176,9 @@ export function introduction(lang: Lang, accent: string, context: SceneContext):
           ))}
         </div>
       </StorySection>
-    </BookPage>
-  );
 
-  const right = (
-    <BookPage
-      chapter={chapter}
-      title={t.title_right}
-      subtitle={t.subtitle_right}
-      pageNumber={context.rightPageNumber}
-      accent={accent}
-    >
       <StorySection heading={t.learnHeading} accent={accent}>
         <StoryList items={t.learnedAboutSelf} accent={accent} bullet="✦" />
-      </StorySection>
-
-      <StorySection heading={t.growthHeading} accent={accent}>
-        <StoryList items={t.improvements} accent={accent} bullet="✦" />
       </StorySection>
 
       <StorySection heading={t.traitsHeading} accent={accent}>

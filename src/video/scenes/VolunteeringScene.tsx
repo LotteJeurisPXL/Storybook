@@ -9,14 +9,14 @@
 import { BookPage, formatChapterLabel } from "../BookPage";
 import type { SceneContext, ScenePages } from "../StoryBook";
 import { EventFeature, type EventFeatureData } from "../components/EventFeature";
-import EventImage from "../../assets/logo.png";
+import SmartICTImage from "../../assets/Smart_ICT.jpeg";
+import CoderDojoImage from "../../assets/WarmsteDojo.jpg";
 
 type Lang = "en" | "nl";
 
 interface VolunteeringCopy {
   chapterTitle: string;
-  firstLabel: string;
-  secondLabel: string;
+  heading1: string;
   firstEvent: EventFeatureData;
   secondEvent: EventFeatureData;
 }
@@ -24,52 +24,46 @@ interface VolunteeringCopy {
 const copy: Record<Lang, VolunteeringCopy> = {
   en: {
     chapterTitle: "Volunteering",
-    heading1: "Description",
-    heading2: "Experience",
+    heading1: "My experience",
     firstEvent: {
-      title: "Community Tech Day",
-      role: "Hands-on digital support for local organisations",
-      description:
-        "A volunteer event focused on helping non-profits with small digital tasks, content updates, and practical advice on improving their online presence.",
+      title: "Smart ICT",
+      role: "Scientific volunteer",
       experience:
-        "It showed me how valuable patient communication is when people need quick support, and how small improvements can make a large difference for local teams.",
-      image: EventImage,
-      imageAlt: "Community Tech Day event image",
+        "I developed the backend and database infrastructure for the Buzzwatch project. An AI project that " +
+        "uses citizen data to map the distribution of pollinator plants, thereby helping beekeepers " + 
+        "find the ideal location for their beehives." ,
+      image: SmartICTImage,
     },
     secondEvent: {
-      title: "Open Workshop Evening",
-      role: "Supporting students through guided project sessions",
-      description:
-        "An evening event where volunteers helped students work through project questions, feedback rounds, and technical blockers in a relaxed workshop setting.",
+      title: "CoderDojo",
+      role: "Coach at Coderdojo Genk",
       experience:
-        "The experience strengthened my confidence in guiding others and reminded me that clear structure and calm encouragement help people move forward faster.",
-      image: EventImage,
-      imageAlt: "Open Workshop Evening event image",
+        "I help children learn to code by creating fun games together." +
+        "I love seeing how children grow in their skills and confidence as they learn to code." +
+        "They're also always very creative in the projects they make.",
+      image: CoderDojoImage,
     },
   },
   nl: {
     chapterTitle: "Vrijwilligerswerk",
-    heading1: "Samenvatting",
-    heading2: "Ervaring",
+    heading1: "Mijn ervaring",
     firstEvent: {
-      title: "Community Tech Day",
-      role: "Digitale ondersteuning voor lokale organisaties",
-      description:
-        "Een vrijwilligersmoment waarbij we non-profits hielpen met kleine digitale taken, content-updates en praktisch advies om hun online aanwezigheid te verbeteren.",
+      title: "Smart ICT",
+      role: "Wetenschappelijke vrijwilliger ",
       experience:
-        "Ik merkte hoe waardevol geduldige communicatie is wanneer mensen snelle hulp nodig hebben, en hoe kleine verbeteringen een groot verschil kunnen maken voor lokale teams.",
-      image: EventImage,
-      imageAlt: "Afbeelding van Community Tech Day",
+        "Ik maakte de backend en database infrastructuur voor het Buzzwatch project. Een AI project dat " +
+        "m.b.v. burgers de hoeveelheid bestuivingsplanten in kaart kan brengen om zo imkers te ondersteunen voor het " + 
+        "vinden van de ideale plek voor hun bijenkasten." ,
+      image: SmartICTImage,
     },
     secondEvent: {
-      title: "Open Workshop Avond",
-      role: "Studenten ondersteunen tijdens begeleide projectsessies",
-      description:
-        "Een avondevent waar vrijwilligers studenten hielpen met projectvragen, feedbackrondes en technische blockers in een ontspannen workshopsetting.",
+      title: "CoderDojo",
+      role: "Coach bij Coderdojo Genk",
       experience:
-        "Die ervaring gaf me meer vertrouwen in het begeleiden van anderen en herinnerde me eraan dat duidelijke structuur en rustige aanmoediging mensen sneller vooruit helpen.",
-      image: EventImage,
-      imageAlt: "Afbeelding van Open Workshop Avond",
+        "Ik help kinderen leren programmeren door samen leuke spelletjes te maken. " +
+        "Ik hou ervan om te zien hoe kinderen groeien in hun vaardigheden en zelfvertrouwen terwijl ze leren coderen. " +
+        "Ze zijn ook heel creatief in de projecten die ze maken.",
+      image: CoderDojoImage,
     },
   },
 };
@@ -83,11 +77,10 @@ export function volunteering(lang: Lang, accent: string, context: SceneContext):
       chapter={chapter}
       title={t.firstEvent.title}
       subtitle={t.firstEvent.role}
-      icon="✿"
       pageNumber={context.leftPageNumber}
       accent={accent}
     >
-        <EventFeature heading1={t.heading1} heading2={t.heading2} event={t.firstEvent} accent={accent} />
+        <EventFeature heading1={t.heading1} event={t.firstEvent} accent={accent} />
     </BookPage>
   );
 
@@ -99,7 +92,7 @@ export function volunteering(lang: Lang, accent: string, context: SceneContext):
       pageNumber={context.rightPageNumber}
       accent={accent}
     >
-        <EventFeature heading1={t.heading1} heading2={t.heading2} event={t.secondEvent} accent={accent} />
+        <EventFeature heading1={t.heading1} event={t.secondEvent} accent={accent} />
     </BookPage>
   );
 

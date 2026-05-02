@@ -185,7 +185,6 @@ export const BookPage: React.FC<BookPageProps> = ({
   title,
   chapter,
   subtitle,
-  icon,
   pageNumber,
   accent = T.green,
   twoColumn = false,
@@ -198,17 +197,6 @@ export const BookPage: React.FC<BookPageProps> = ({
         <span className="book-page__chapter" style={{ color: `${accent}cc` }}>
           {chapter}
         </span>
-      )}
-      {icon && (
-        <div
-          className="book-page__icon"
-          style={{
-            border: `1px solid ${accent}30`,
-            background: `${accent}10`,
-          }}
-        >
-          {icon}
-        </div>
       )}
     </div>
 

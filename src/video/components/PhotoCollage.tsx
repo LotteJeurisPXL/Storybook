@@ -41,6 +41,16 @@
  *   ├────┼────┼────┤
  *   │ 4  │ 5  │ 6  │
  *   └────┴────┴────┘
+ *
+ *  "landscape-portrait"  (best for 8–10 images)
+ *   ┌────┬─────────┬─────────┐
+ *   │ 1  │    2    │    3    │
+ *   │    ├─────────┼─────────┤
+ *   │    │    4    │    5    │
+ *   ├────┴────────┼┴─────────┤
+ *   │      6      │    7     │
+ *   └─────────────┴──────────┘
+ *   (1 is portrait, others are mostly landscape)
  */
 
 import React from "react";
@@ -52,7 +62,7 @@ export interface CollageImage {
   alt: string;
 }
 
-export type CollageLayout = "hero-left" | "hero-top" | "mosaic" | "grid";
+export type CollageLayout = "hero-left" | "hero-top" | "mosaic" | "grid" | "landscape-portrait";
 
 export interface PhotoCollageProps {
   images: CollageImage[];
@@ -205,6 +215,42 @@ const Grid: React.FC<{ images: CollageImage[]; accent: string; gap: number; bord
   );
 };
 
+const LandscapePortrait: React.FC<{ images: CollageImage[]; accent: string; gap: number; borderRadius: number }> = ({
+  images, accent, gap, borderRadius,
+}) => {
+  // Primary composition follows the documented 1-7 sketch.
+  const slots: React.CSSProperties[] = [
+    { gridColumn: "1", gridRow: "1 / 3" },
+    { gridColumn: "2 / 4", gridRow: "1" },
+    { gridColumn: "4 / 6", gridRow: "1" },
+    { gridColumn: "2 / 4", gridRow: "2" },
+    { gridColumn: "4 / 6", gridRow: "2" },
+    { gridColumn: "1 / 3", gridRow: "3" },
+    { gridColumn: "3 / 6", gridRow: "3" },
+  ];
+
+  return (
+    <div style={{
+      width: "100%", height: "100%",
+      display: "grid",
+      gridTemplateColumns: "1.8fr 1fr 1fr 1fr 1fr",
+      gridTemplateRows: "1fr 1fr 1fr",
+      gap,
+      boxSizing: "border-box",
+    }}>
+      {images.slice(0, 7).map((img, i) => (
+        <Tile
+          key={i}
+          image={img}
+          accent={accent}
+          borderRadius={borderRadius}
+          style={slots[i]}
+        />
+      ))}
+    </div>
+  );
+};
+
 // ─── Public component ─────────────────────────────────────────────────────────
 
 export const PhotoCollage: React.FC<PhotoCollageProps> = ({
@@ -222,6 +268,7 @@ export const PhotoCollage: React.FC<PhotoCollageProps> = ({
     case "hero-top":  return <HeroTop  {...props} />;
     case "mosaic":    return <Mosaic   {...props} />;
     case "grid":      return <Grid     {...props} />;
+    case "landscape-portrait": return <LandscapePortrait {...props} />;
     case "hero-left":
     default:          return <HeroLeft {...props} />;
   }
