@@ -67,6 +67,13 @@ export interface StoryBookInputProps extends Record<string, unknown> {
   sceneOrder:       SceneKey[];
   sceneDuration:    number;
   flipDuration:     number;
+  /**
+   * Duration of the opening scene in frames.
+   * Keep this short (e.g. 30 = 1 s) since the book is already open —
+   * it just needs enough time for StoryBook to cross-fade into the first
+   * real page flip. Defaults to 30.
+   */
+  openingDuration:  number;
   bookColour:       string;
   accentColour:     string;
   language:         "en" | "nl";
@@ -80,6 +87,7 @@ export const defaultInputProps: StoryBookInputProps = {
   sceneOrder:      normalizeSceneOrder(sceneDefinitions.map(({ key }) => key)),
   sceneDuration:   150,
   flipDuration:    200,
+  openingDuration: 30,
   bookColour:      "#1f9e63",
   accentColour:    "#b8860b",
   language:        "en",
@@ -90,8 +98,10 @@ export const defaultInputProps: StoryBookInputProps = {
 // ── Derived total duration ────────────────────────────────────────────────────
 
 function totalDuration(props: StoryBookInputProps): number {
-  const { sceneOrder, sceneDuration, flipDuration } = props;
-  return sceneOrder.length * sceneDuration + (sceneOrder.length - 1) * flipDuration;
+  const { sceneOrder, sceneDuration, flipDuration, openingDuration } = props;
+  // The opening scene uses openingDuration; all others use sceneDuration.
+  const contentScenes = sceneOrder.length - 1;
+  return openingDuration + contentScenes * sceneDuration + (sceneOrder.length - 1) * flipDuration;
 }
 
 // ── Composition wrapper ───────────────────────────────────────────────────────

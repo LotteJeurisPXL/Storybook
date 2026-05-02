@@ -30,11 +30,10 @@ export function Introduction() {
         </div>
         <div className="intro-card">
           <div className="card-glyph">◇</div>
-          <h3>Download the video</h3>
+          <h3>View the video</h3>
           <p>
             The last section of this website is the video section. Here you can preview the video be
-            updated in <strong>real time</strong> as you change the controls. Additionally, you can 
-            also export the video  download it as an MP4 file.
+            updated in <strong>real time</strong> as you change the controls. 
           </p>
         </div>
       </div>

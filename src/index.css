@@ -506,6 +506,50 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   border-radius: inherit;
 }
 
+.opening-cover-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 3vw, 56px);
+  box-sizing: border-box;
+}
+
+.opening-cover-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 76%;
+  text-align: center;
+}
+
+.opening-cover-logo {
+  width: clamp(96px, 7vw, 142px);
+  height: clamp(96px, 7vw, 142px);
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+}
+
+.opening-cover-title {
+  margin: 0;
+  color: #2b1f14;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 4.6vw, 5.8rem);
+  line-height: 0.95;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.opening-cover-author {
+  margin: 0;
+  color: #6b4f3a;
+  font-size: clamp(1.05rem, 1.3vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
 
 /* ═══════════════════════════════════════════════════════════
    6. CONTROLS SECTION
