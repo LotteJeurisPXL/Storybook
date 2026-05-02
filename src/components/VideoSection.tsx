@@ -19,7 +19,7 @@ export function VideoSection({ storyBookProps }: VideoSectionProps) {
   return (
     <section className="video-section">
       <div className="controls-header">
-        <h2 className="controls-title">Video Preview</h2>
+        <h2 className="controls-title">Video</h2>
         <hr />
       </div>
       <br />

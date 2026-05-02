@@ -20,7 +20,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         {/* Nav */}
         <nav className="header-nav">
           <a
-            href="https://github.com/remotion-dev/remotion"
+            href="https://github.com/LotteJeurisPXL"
             target="_blank"
             rel="noopener noreferrer"
             className="nav-link"
@@ -40,7 +40,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
               <polygon points="23 7 16 12 23 17 23 7" />
               <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
             </svg>
-            Player API
+            Remotion Player
           </a>
         </nav>
 

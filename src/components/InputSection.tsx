@@ -53,7 +53,7 @@ export function InputSection({ storyBookProps, onUpdate }: InputSectionProps) {
     <section className="controls-section">
       <div className="controls-inner">
         <div className="controls-header">
-          <h2 className="controls-title">Composition Controls</h2>
+          <h2 className="controls-title">Controls</h2>
           <button className="btn-reset" onClick={handleReset}>
             ↺ Reset all
           </button>
@@ -163,15 +163,7 @@ export function InputSection({ storyBookProps, onUpdate }: InputSectionProps) {
               hint="Switch the scene copy between English and Dutch"
               onChange={(v) => onUpdate({ language: v as StoryBookInputProps["language"] })}
             />
-          </div>
-        </div>
 
-        {/* Group 3 — Timing */}
-        <div className="control-group">
-          <h3 className="group-label">
-            <span className="group-dot" /> Timing
-          </h3>
-          <div className="control-grid">
             <SliderInput
               label="Scene Length"
               value={sceneDuration}

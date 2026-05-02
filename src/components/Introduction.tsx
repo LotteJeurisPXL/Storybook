@@ -5,33 +5,36 @@ export function Introduction() {
         Compose video,<br />
         <em>in real time.</em>
       </h1>
+      <div className="controls-header">
+        <h2 className="controls-title">Introduction</h2>
+      </div>
+      <br />
+
       <div className="intro-cards">
         <div className="intro-card">
           <div className="card-glyph">◎</div>
-          <h3>What it does</h3>
+          <h3>Welcome</h3>
           <p>
-            RemotionLab lets you build and preview programmatic video compositions
-            directly in the browser using{" "}
-            <strong>Remotion</strong> — no render queue, no waiting.
+            Welcome to SchoolStories. A showcase of my experiences during my <strong>PXL career</strong>, 
+            while studying <strong>Applied Computer Science</strong>. 
+            This website was built as part of my creative assignment for I-talent.
           </p>
         </div>
         <div className="intro-card">
           <div className="card-glyph">◈</div>
-          <h3>How to use it</h3>
+          <h3>Change the controls</h3>
           <p>
-            Tweak the controls below the player. Every change updates the
-            composition instantly. Adjust text, colours, timing, and more
-            to craft your scene.
+            Underneath this section, is the <strong>controls section</strong>. Here you can change the order of the scenes, 
+            the duration of each scene, the colours used in the video and the language. 
           </p>
         </div>
         <div className="intro-card">
           <div className="card-glyph">◇</div>
-          <h3>How it's built</h3>
+          <h3>Download the video</h3>
           <p>
-            Built with <strong>React</strong> +{" "}
-            <strong>TypeScript</strong> and the{" "}
-            <strong>Remotion Player</strong> component. Compositions are
-            pure React — every frame is rendered deterministically from props.
+            The last section of this website is the video section. Here you can preview the video be
+            updated in <strong>real time</strong> as you change the controls. Additionally, you can 
+            also export the video  download it as an MP4 file.
           </p>
         </div>
       </div>

@@ -104,14 +104,14 @@ const copy: Record<Lang, SeminarCopy> = {
         title: "Visuele generatieve AI ",
         company: " Uncanny",
         companyMark: UncannyLogo,
-        description: "Ik denk niet dat ik veel van wat ik tijdens dit seminar heb geleerd, zal gebruiken. Ik had graag gezien dat we meer de kans hadden gekregen om dingen zelf uit te proberen.",
+        description: "Ik denk niet dat ik veel van wat ik tijdens dit seminarie heb geleerd, zal gebruiken. Ik had graag gezien dat we meer de kans hadden gekregen om dingen zelf uit te proberen.",
         date: "12 Mar 2024",
       },
       {
         title: "Ethical hacking",
         company: "Toreon",
         companyMark: ToreonLogo,
-        description: "Ik denk dat dit een zeer goede seminar was. Het was nuttig en we kregen veel hands-on ervaring. Ik dacht dat het beter zou zijn geweest als ze ons enkele technieken hadden geleerd om de eerste paar problemen op te lossen.",
+        description: "Ik denk dat dit een zeer goede seminarie was. Het was nuttig en we kregen veel hands-on ervaring. Ik dacht dat het beter zou zijn geweest als ze ons enkele technieken hadden geleerd om de eerste paar problemen op te lossen.",
         date: "19 Mar 2024",
       },
       {
@@ -134,21 +134,21 @@ const copy: Record<Lang, SeminarCopy> = {
         title: "Quantum ML",
         company: "IBM",
         companyMark: IBMLogo,
-        description: "Een van de interessantste seminaries. Er waren er niet veel die zich op AI richtten, maar dit seminar bood precies genoeg nieuwe informatie om echt boeiend en spannend te zijn, terwijl het tegelijkertijd begrijpelijk bleef.",
+        description: "Een van de interessantste seminaries. Er waren weinig AI specifieke seminaries, maar dit seminarie bood precies genoeg nieuwe informatie om echt interessant te zijn, terwijl het tegelijkertijd begrijpelijk bleef.",
         date: "05 Nov 2025",
       },
       {
         title: "Een bedrijf in bijberoep",
         company: "Sarah Swaenepoel",
         companyMark: SarahSwaenepoel,
-        description: "Ik vond dit seminar geweldig. Het was heel leerzaam. Het was fijn om nog wat tips te krijgen voordat we afstudeerden, zelfs voor degenen die zelf geen bedrijf wilden beginnen.",
+        description: "Ik vond dit seminarie geweldig. Het was heel leerzaam. Het was fijn om nog wat tips te krijgen voordat we afstudeerden, zelfs voor degenen die zelf geen bedrijf wilden beginnen.",
         date: "24 Nov 2025",
       },
       {
         title: "Postman AI",
         company: " Refleqt",
         companyMark: RefleqtLogo,
-        description: "Ik heb niet echt veel opgestoken van dit seminar. De meesten van ons hadden al veel ervaring met Postman. Het gedeelte over AI hadden we net zo goed uit een filmpje van 10 minuten kunnen leren.",
+        description: "Ik heb niet echt veel opgestoken van dit seminarie. De meesten van ons hadden al veel ervaring met Postman. Het gedeelte over AI hadden we net zo goed uit een filmpje van 10 minuten kunnen leren.",
         date: "26 Nov 2025",
       },
       {
@@ -157,7 +157,7 @@ const copy: Record<Lang, SeminarCopy> = {
         companyMark: EasiLogo,
         description: 
           "Ik ben dol op data-engineering en keek ernaar uit om meer te leren over Microsoft Fabric," +
-          "maar het seminar was meer een productpresentatie dan een uitleg over hoe je het moet gebruiken.",
+          "maar het seminarie was meer een productpresentatie dan een uitleg over hoe je het moet gebruiken.",
         date: "31 Dec 2025",
       },
     ],
