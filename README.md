@@ -8,4 +8,4 @@ Run the following command:
 ```bash
 docker compose up
 ```
-The website will ba available on [port 5173](http://localhost:5173/)
+The website will be available on [port 5173](http://localhost:5173/)
