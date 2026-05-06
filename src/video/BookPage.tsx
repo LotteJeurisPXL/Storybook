@@ -3,7 +3,7 @@
  *
  * Whimsical storybook page layout and all page sub-components.
  * Styles live in styles/BookPage.css.
- * Only dynamic values (accent colour, icon border/bg, etc.) are inline.
+ * Only dynamic values (accent colour, border/bg, etc.) are inline.
  *
  * Exports:
  *   BookPage          — full page wrapper (header, title block, body, footer)
@@ -173,7 +173,6 @@ export interface BookPageProps {
   title: string;
   chapter?: string;
   subtitle?: string;
-  icon?: string;
   pageNumber?: number;
   accent?: string;
   /** Render children in a two-column grid */

@@ -38,7 +38,7 @@ const copy: Record<Lang, VolunteeringCopy> = {
       title: "CoderDojo",
       role: "Coach at Coderdojo Genk",
       experience:
-        "I help children learn to code by creating fun games together." +
+        "I help children learn to code by creating fun games together. " +
         "I love seeing how children grow in their skills and confidence as they learn to code." +
         "They're also always very creative in the projects they make.",
       image: CoderDojoImage,
@@ -51,7 +51,7 @@ const copy: Record<Lang, VolunteeringCopy> = {
       title: "Smart ICT",
       role: "Wetenschappelijke vrijwilliger ",
       experience:
-        "Ik maakte de backend en database infrastructuur voor het Buzzwatch project. Een AI project dat " +
+        "Ik maakte de backend en database infrastructuur voor het Buzzwatch project. Een AI-project dat " +
         "m.b.v. burgers de hoeveelheid bestuivingsplanten in kaart kan brengen om zo imkers te ondersteunen voor het " + 
         "vinden van de ideale plek voor hun bijenkasten." ,
       image: SmartICTImage,

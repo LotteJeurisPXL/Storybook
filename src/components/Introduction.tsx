@@ -32,7 +32,7 @@ export function Introduction() {
           <div className="card-glyph">◇</div>
           <h3>View the video</h3>
           <p>
-            The last section of this website is the video section. Here you can preview the video be
+            The last section of this website is the video section. Here you can preview the video being
             updated in <strong>real time</strong> as you change the controls. 
           </p>
         </div>

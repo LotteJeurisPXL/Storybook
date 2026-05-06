@@ -29,7 +29,7 @@ const copy: Record<Lang, InnovationCopy> = {
       title: "Hack the Future",
       role: "Cronos hackathon",
       experience:
-        "I really liked the assignment we got for this hackaton. I might even try and imporve that project " +
+        "I really liked the assignment we got for this hackathon. I might even try and improve that project " +
         "in my own time. Just for fun. Unfortunately, we struggled a lot with getting the technology to work. " +
         "I got a chance to improve during my internship.",
       image: HackTheFutureImage,
@@ -38,7 +38,7 @@ const copy: Record<Lang, InnovationCopy> = {
       title: "Domain Driven Design",
       role: "Innovation route",
       experience:
-        "I'm glad I chose this innovation route. DDD is something I don't have a lot of experience with, but I understand its importance." +
+        "I'm glad I chose this innovation route. DDD is something I don't have a lot of experience with, but I understand its importance. " +
         "I struggled a lot more in the last sessions, because my knowledge & expertise in C# and Java is a lot less than those who studied AON.",
       image: DDDImage,
     },

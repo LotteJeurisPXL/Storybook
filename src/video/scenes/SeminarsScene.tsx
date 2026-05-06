@@ -51,7 +51,7 @@ const copy: Record<Lang, SeminarCopy> = {
         title: "Rapid app development",
         company: "Inetum-Realdolmen",
         companyMark: InetumRealdolmenLogo,
-        description: "This was a very interesting seminar. I didn't have any experience with low-code development. They gave some great usecases for when it can be useful.",
+        description: "This was a very interesting seminar. I didn't have any experience with low-code development. They gave some great use cases for when it can be useful.",
         date: "26 Mar 2024",
       },
       {
@@ -89,9 +89,9 @@ const copy: Record<Lang, SeminarCopy> = {
         company: "Easi",
         companyMark: EasiLogo,
         description: 
-          "I love data engineering & was exited to learn about Microsoft Fabric, " +
+          "I love data engineering & was excited to learn about Microsoft Fabric, " +
           "but the seminar was more a showcase of the product than an explanation on how to use it.",
-        date: "31 Dec 2025",
+        date: "03 Dec 2025",
       },
     ],
   },
@@ -102,7 +102,7 @@ const copy: Record<Lang, SeminarCopy> = {
     year1Seminars: [
       {
         title: "Visuele generatieve AI ",
-        company: " Uncanny",
+        company: "Uncanny",
         companyMark: UncannyLogo,
         description: "Ik denk niet dat ik veel van wat ik tijdens dit seminarie heb geleerd, zal gebruiken. Ik had graag gezien dat we meer de kans hadden gekregen om dingen zelf uit te proberen.",
         date: "12 Mar 2024",
@@ -158,7 +158,7 @@ const copy: Record<Lang, SeminarCopy> = {
         description: 
           "Ik ben dol op data-engineering en keek ernaar uit om meer te leren over Microsoft Fabric," +
           "maar het seminarie was meer een productpresentatie dan een uitleg over hoe je het moet gebruiken.",
-        date: "31 Dec 2025",
+        date: "03 Dec 2025",
       },
     ],
   },
@@ -172,7 +172,6 @@ export function seminars(lang: "en" | "nl", accent: string, context: SceneContex
     <BookPage
       chapter={chapter}
       title={t.year2Label}
-      icon="🎓"
       pageNumber={context.leftPageNumber}
       accent={accent}
     >

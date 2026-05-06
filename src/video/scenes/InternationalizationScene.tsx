@@ -58,7 +58,7 @@ const copy: Record<Lang, InternationalisationCopy> = {
       "This BIP took place in Belgium at PXL. We were joinedby students from students from TH Rosenheim (Germany) & Algebra University (Croatia). ",
     experienceLabel: "My Experience",
     experienceText:
-      "I'm really glad I participated in tthe BIP. I learned a lot about working in an international team, and it was a great opportunity to meet people from different cultures and backgrounds. The assignment was challenging. We didn't have a topic until Thursday. However, we managed to still win the competiton",
+      "I'm really glad I participated in the BIP. I learned a lot about working in an international team, and it was a great opportunity to meet people from different cultures and backgrounds. The assignment was challenging. We didn't have a topic until Thursday. However, we managed to still win the competiton",
   },
   nl: {
     chapterTitle: "Internationalisering",

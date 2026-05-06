@@ -43,7 +43,7 @@ const copy: Record<Lang, {
       "my knowledge with a professional bachelor in Applied Computer Science at PXL. I have a strong " +
       "interest in Big Data & Artificial Intelligence. In my spare time, I volunteer at CoderDojo to help " +
       "children learn to code. I am socially engaged, critical, detail-oriented and eager to learn",
-    interests: ["Data engineering", "Data analysis", "ArtificiaI Intelligence"],
+    interests: ["Data engineering", "Data analysis", "Artificial Intelligence"],
     learnedAboutSelf: [
       "I perform best when structure and creativity come together.",
       "I thrive in teams where feedback is open and specific.",
