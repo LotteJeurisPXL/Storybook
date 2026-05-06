@@ -1,0 +1,294 @@
+/* ============================================================
+   BookPage.css
+   Whimsical storybook page layout and all sub-components:
+     .book-page, .story-section, .story-tag, .story-stat,
+     .story-list, .illustration-box
+   ============================================================ */
+
+@import "./tokens.css";
+
+/* ════════════════════════════════════════════════════════════
+   BookPage — the page wrapper
+════════════════════════════════════════════════════════════ */
+
+.book-page {
+  position: absolute;
+  inset: 0;
+  /* Generous margins so content never touches the physical edges */
+  padding: 60px 65px 50px 65px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-body);
+  font-size: large;
+}
+
+/* ── Running header row ── */
+.book-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+  font-size: large;
+}
+
+.book-page__chapter {
+  font-family: var(--font-mono);
+  font-size: 1.2 rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  /* colour set inline via accent */
+}
+
+.book-page__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-left: auto;
+  /* border + background set inline via accent */
+}
+
+/* ── Title block ── */
+.book-page__title-block {
+  flex-shrink: 0;
+  margin-bottom: 16px;
+}
+
+.book-page__title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.8 rem;
+  color: var(--ink);
+  margin: 0 0 5px;
+  line-height: 1.15;
+}
+
+.book-page__subtitle {
+  font-family: var(--font-body);
+  font-size: larger;
+  color: var(--ink-light);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.book-page__divider {
+  margin-top: 10px;
+}
+
+/* ── Body ── */
+.book-page__body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  font-size: x-large;
+}
+
+.book-page__body--two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+/* ── Footer ── */
+.book-page__footer {
+  flex-shrink: 0;
+  margin-top: 12px;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* border-top set inline via accent */
+}
+
+.book-page__page-number {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  margin-left: 16px;
+  white-space: nowrap;
+}
+
+/* Left pages: number sits on the outer (left) edge like a real spread */
+.page-surface--left .book-page__footer {
+  justify-content: flex-start;
+}
+
+.page-surface--left .book-page__page-number {
+  order: -1;
+  margin-left: 0;
+  margin-right: 16px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   OrnamentDivider SVG
+════════════════════════════════════════════════════════════ */
+
+.ornament-divider {
+  display: block;
+  overflow: visible;
+}
+
+/* ════════════════════════════════════════════════════════════
+   StorySection
+════════════════════════════════════════════════════════════ */
+
+.story-section {
+  margin-bottom: 22px;
+  font-size: x-large;
+}
+
+.story-section__heading-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Wax-seal dot — colour set inline */
+.story-section__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  /* background + box-shadow set inline via accent */
+}
+
+.story-section__label {
+  font-family: var(--font-mono);
+  font-size: large;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  /* colour set inline via accent */
+}
+
+.story-section__rule {
+  flex: 1;
+  height: 1px;
+  margin-left: 4px;
+  /* background set inline via accent */
+}
+
+.story-section__body {
+  font-family: var(--font-body);
+  color: var(--ink-mid);
+  line-height: 1.7;
+}
+
+/* ════════════════════════════════════════════════════════════
+   StoryTag
+════════════════════════════════════════════════════════════ */
+
+.story-tag {
+  display: inline-block;
+  padding: 3px 11px;
+  margin: 0 6px 6px 0;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: large;
+  letter-spacing: 0.07em;
+  /* border + background + colour set inline via accent */
+}
+
+/* ════════════════════════════════════════════════════════════
+   StoryStat
+════════════════════════════════════════════════════════════ */
+
+.story-stat {
+  flex: 1;
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px 10px 10px;
+  text-align: center;
+  position: relative;
+  /* border + background set inline via accent */
+}
+
+/* Corner flourish divs — position set inline */
+.story-stat__corner {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-style: solid;
+  border-width: 0;
+  /* border widths + colour set inline via accent */
+}
+
+.story-stat__value {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 700;
+  /* colour set inline via accent */
+}
+
+.story-stat__label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--ink-light);
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ════════════════════════════════════════════════════════════
+   StoryList
+════════════════════════════════════════════════════════════ */
+
+.story-list__item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 0;
+  font-family: var(--font-body);
+  color: var(--ink-mid);
+  line-height: 1.5;
+  /* border-bottom set inline via ink token */
+}
+
+.story-list__bullet {
+  flex-shrink: 0;
+  /* colour set inline via accent */
+}
+
+/* ════════════════════════════════════════════════════════════
+   IllustrationBox
+════════════════════════════════════════════════════════════ */
+
+.illustration-box {
+  margin-bottom: 16px;
+}
+
+.illustration-box__frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  /* border + background + height set inline via accent */
+}
+
+.illustration-box__inset-shadow {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+.illustration-box__caption {
+  margin: 5px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--ink-light);
+  text-align: center;
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
